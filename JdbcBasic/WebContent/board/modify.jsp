@@ -31,7 +31,7 @@
 				 데이터를 전송할 때 사용하는 방법입니다.
 			 --%>
 		
-			# 글 번호: <input type="hidden" name="bId" value="<%=vo.getBoardId()%>">
+			<input type="hidden" name="bId" value="<%=vo.getBoardId()%>">
 			
 			# 작성자: <input type="text" name="writer" value="<%=vo.getWriter()%>"> <br>
 			

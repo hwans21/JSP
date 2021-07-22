@@ -8,14 +8,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 import kr.co.jsp.util.JdbcUtil;
 
 public class BoardDAO implements IBoardDAO {
 
+	//커넥션 풀의 정보를 담을 변수를 선언.
+	private DataSource ds;
+	
 	private BoardDAO() {
+		//클래스에서 커넥션 풀을 구하는 방법. (설정 파일이 InitialContext 객체에 저장됨)
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-		} catch (ClassNotFoundException e) {
+			InitialContext ct = new InitialContext();
+			ds = (DataSource) ct.lookup("java:comp/env/jdbc/myOracle");
+		} catch (NamingException e) {
 			e.printStackTrace();
 		}
 	}
@@ -37,7 +46,7 @@ public class BoardDAO implements IBoardDAO {
 	PreparedStatement pstmt = null;
 	ResultSet rs = null;
 	
-	
+	/*
 	//Connection 객체를 얻을 수 있는 유틸 메서드
 	private Connection getConnection() throws Exception {
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -46,7 +55,7 @@ public class BoardDAO implements IBoardDAO {
 		
 		return DriverManager.getConnection(url, uid, upw);
 	}
-	
+	*/
 	
 	@Override
 	public boolean insert(BoardVO vo) {
@@ -57,7 +66,7 @@ public class BoardDAO implements IBoardDAO {
 				+ "VALUES(bid_seq.NEXTVAL,?,?,?)";
 		
 		try {
-			conn = getConnection();
+			conn = ds.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getWriter());
 			pstmt.setString(2, vo.getTitle());
@@ -81,7 +90,7 @@ public class BoardDAO implements IBoardDAO {
 		String sql = "SELECT * FROM board ORDER BY board_id DESC";
 		
 		try {
-			conn = getConnection();
+			conn = ds.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			
@@ -112,7 +121,7 @@ public class BoardDAO implements IBoardDAO {
 		String sql = "SELECT * FROM board WHERE board_id=?";
 		
 		try {
-			conn = getConnection();
+			conn = ds.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, bId);
 			rs = pstmt.executeQuery();
@@ -138,14 +147,59 @@ public class BoardDAO implements IBoardDAO {
 
 	@Override
 	public boolean update(BoardVO vo) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean flag = false;
+		
+		String sql = "UPDATE board "
+				+ "SET writer=?, title=?, content=? "
+				+ "WHERE board_id=?";
+		
+		try {
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, vo.getWriter());
+			pstmt.setString(2, vo.getTitle());
+			pstmt.setString(3, vo.getContent());
+			pstmt.setInt(4, vo.getBoardId());
+			
+			if(pstmt.executeUpdate() == 1) flag = true;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtil.close(conn, pstmt);
+		}
+		return flag;
 	}
 
 	@Override
 	public boolean delete(int bId) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean flag = false;
+		
+		String sql = "DELETE FROM board WHERE board_id=?";
+		
+		try {
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, bId);
+			
+			if(pstmt.executeUpdate() == 1) flag = true;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtil.close(conn, pstmt);
+		}
+		return flag;
 	}
 
 }
+
+
+
+
+
+
+
+
+
+

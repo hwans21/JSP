@@ -43,7 +43,9 @@
 					<td>
 						<a href="content.jsp?bId=<%=vo.getBoardId()%>"><%=vo.getTitle() %></a>
 					</td>
-					<td>[삭제]</td>
+					<td>
+						<a href="delete.jsp?bId=<%=vo.getBoardId()%>">[삭제]</a>
+					</td>
 				</tr>
 		<% } %>
 		
