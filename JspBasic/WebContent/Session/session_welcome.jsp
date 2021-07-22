@@ -26,7 +26,7 @@
 		String nick = (String) session.getAttribute("user_nick");
     %>
     
-    
+<%@ include file="../Application/app_basic.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,6 +39,10 @@
 	
 	<a href="session_login.jsp">로그인 페이지로</a>
 	<a href="../JspObjRequest/req_album.jsp">앨범 리스트 보기</a>
+	
+	<hr>
+	
+	<h3>방문자수: <%=count %>명</h3>
 
 </body>
 </html>

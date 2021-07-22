@@ -28,9 +28,24 @@ public class UserRepository {
 	
 	//매개값으로 id를 받아서 해당 id를 가진 객체가 userList에 있는 지 탐색하는 메서드
 	public static User getUser(String id) {
-		
+		for(User user : userList) {
+			if(user.getAccount().equals(id)) {
+				return user;
+			}
+		}
+		return null;
 	}
 	
+	//매개값으로 id를 받아서 해당 id를 가진 객체를 userList에서 삭제하는 메서드
+	public static void deleteUser(String id) {
+//		for(User user : userList) {
+//			if(user.getAccount().equals(id)) {
+//				userList.remove(user);
+//				return;
+//			}
+//		}
+		userList.remove(getUser(id));
+	}
 	
 
 }

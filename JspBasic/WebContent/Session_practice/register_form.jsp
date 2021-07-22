@@ -12,10 +12,10 @@
 	
 	<form action="register_controller.jsp" method="post">
 		<p>
-			<input type="text" name="account" placeholder="ID">
-			<input type="password" name="password" placeholder="PW">
-			<input type="text" name="name" placeholder="이름">
-			<input type="text" name="nickname" placeholder="별명">
+			<input type="text" name="account" placeholder="ID"> <br>
+			<input type="password" name="password" placeholder="PW"> <br>
+			<input type="text" name="name" placeholder="이름"> <br>
+			<input type="text" name="nickname" placeholder="별명"> <br>
 			<input type="submit" value="회원가입">
 		</p>
 	</form>

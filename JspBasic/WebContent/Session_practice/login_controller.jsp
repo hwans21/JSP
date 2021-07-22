@@ -1,3 +1,5 @@
+<%@page import="user.User"%>
+<%@page import="user.UserRepository"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
@@ -24,7 +26,35 @@
 		6. 비밀번호가 일치하지 않는다면 script태그로 "비밀번호가 일치하지 않습니다."
 		 경고창 하나 띄워 주시고 다시 로그인 페이지로 이동시켜 주세요.
 		*/
-    %>
+		
+		String id = request.getParameter("account");
+		String pw = request.getParameter("password");
+		
+		User user = UserRepository.getUser(id);
+		
+		if(user != null) { //회원이 존재하는 경우
+			if(user.getPassword().equals(pw)) { //로그인 성공
+				session.setAttribute("login", user);
+				response.sendRedirect("login_welcome.jsp");
+			} else { //비밀번호가 틀린 경우 %>
+				<script>
+					alert("비밀번호가 틀렸습니다.");
+					history.back();
+				</script>
+		<%  }
+		
+		} else { //회원이 존재하지 않는 경우 (user == null) %>
+		
+			<script>
+				alert("존재하지 않는 회원입니다.");
+				location.href="login_form.jsp";
+			</script>
+			
+	 <% } %>
+		
+		
+		
+   
     
     
     
