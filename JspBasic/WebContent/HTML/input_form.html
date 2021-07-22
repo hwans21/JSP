@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<h1>회원 가입 양식</h1>
+	<hr>
+	
+	<!-- form태그는 입력 양식의 시작과 끝을 표시합니다. -->
+	<!-- input태그는 입력창을 만드는 태그입니다.
+		type 속성으로 여러가지 입력창을 제공할 수 있습니다. -->
+	
+	<form action="hello.html"> <!-- action에는 데이터를 받아서 처리할 페이지의 주소를 작성합니다. -->
+	
+		# 아이디: <input type="text" name="id"> <br>
+		# 비밀번호: <input type="password" name="pw"> <br>
+		
+		# 성별: <br>
+		<!-- radio타입은 동그라미 체크 버튼을 만듭니다. (다중 선택지에 단일 선택 버튼) 
+			&nbsp; 가로 공백을 만듭니다. (스페이스바 1회) -->
+		<input type="radio" name="gender" value="남자"> 남 &nbsp;&nbsp;&nbsp;       
+		<input type="radio" name="gender" value="여자"> 여 <br>
+		
+		# 취미: <br>
+		<!-- checkbox 타입은 네모 체크박스 버튼을 만듭니다. (다중 선택지에 다중 선택 가능) -->
+		<input type="checkbox" name="hobby" value="독서"> 독서 &nbsp;
+		<input type="checkbox" name="hobby" value="수면"> 수면 &nbsp;
+		<input type="checkbox" name="hobby" value="축구"> 축구 &nbsp;
+		<input type="checkbox" name="hobby" value="게임"> 게임 <br>
+		
+		# 지역 <br>
+		<select name="region"> <!-- 선택 양식을 제공. option이라는 자식 태그에 선택지를 지정 -->
+			<option>서울</option>
+			<option>대전</option>
+			<option>대구</option>
+			<option>부산</option>
+		</select> <br>
+		
+		<!-- textarea: 텍스트 작성 공간 영역을 제공. cols는 너비, rows는 높이 -->
+		# 자기소개 <br>
+		<textarea name="introduce" rows="10" cols="40"></textarea>  <br>
+		
+		<!-- 
+			submit은 form태그의 action에 작성된 경로로 폼 데이터 양식을 전달합니다.
+			value에는 버튼에 들어갈 텍스트를 지정합니다.
+		 -->
+		
+		<input type="submit" value="회원가입">
+		<input type="reset" value="초기화">
+		
+		
+	
+	</form>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
