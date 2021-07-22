@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 //DAO는 웹 서버의 DB 연동 요청이 발생할 때마다
 //DataBase CRUD(create, read, update, delete)작업을 전담하는 클래스입니다.
@@ -81,6 +83,109 @@ public class ScoreDAO {
 		return flag;
 	}
 	
+	//점수 목록을 조회하는 메서드
+	public List<ScoreVO> selectAll() {
+		List<ScoreVO> scoreList = new ArrayList<>();
+		String sql = "SELECT * FROM scores ORDER BY id ASC";
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ScoreVO vo = new ScoreVO(
+							rs.getInt("id"),
+							rs.getString("name"),
+							rs.getInt("kor"),
+							rs.getInt("eng"),
+							rs.getInt("math"),
+							rs.getInt("total"),
+							rs.getDouble("average")
+						);
+				scoreList.add(vo);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return scoreList;
+	}
+	
+	//점수를 삭제하는 메서드
+	public boolean delete(int id) {
+		boolean flag = false;
+		
+		String sql = "DELETE FROM scores WHERE id=?";
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, id);
+			int rn = pstmt.executeUpdate();
+			
+			if(rn == 1) flag = true;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return flag;
+	}
+	
+	//이름 검색 메서드
+	public List<ScoreVO> search(String keyword) {
+		List<ScoreVO> scoreList = new ArrayList<>();
+		
+		//?에 % 붙이지 마세요!!
+		String sql = "SELECT * FROM scores WHERE name LIKE ?";
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, keyword);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ScoreVO vo = new ScoreVO(
+							rs.getInt("id"),
+							rs.getString("name"),
+							rs.getInt("kor"),
+							rs.getInt("eng"),
+							rs.getInt("math"),
+							rs.getInt("total"),
+							rs.getDouble("average")
+						);
+				scoreList.add(vo);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return scoreList;
+	}
 	
 
 }
