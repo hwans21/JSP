@@ -3,6 +3,7 @@ package kr.co.jsp.board.controller;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,13 +12,23 @@ import javax.servlet.http.HttpServletResponse;
 
 import kr.co.jsp.board.model.BoardDAO;
 import kr.co.jsp.board.model.BoardVO;
+import kr.co.jsp.board.service.ContentService;
+import kr.co.jsp.board.service.DeleteService;
+import kr.co.jsp.board.service.GetListService;
+import kr.co.jsp.board.service.IBoardService;
+import kr.co.jsp.board.service.ModifyService;
+import kr.co.jsp.board.service.RegistService;
+import kr.co.jsp.board.service.SearchService;
+import kr.co.jsp.board.service.UpdateService;
 
 
 @WebServlet("*.board")
 public class BoardController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-
+	private RequestDispatcher dp;
+	private IBoardService sv;
+	
     public BoardController() {
         super();
     }
@@ -49,20 +60,8 @@ public class BoardController extends HttpServlet {
 			
 		case "regist":
 			System.out.println("글 등록 요청이 들어옴!");
-			
-			/*
-			 1. 파라미터값 가져오세요.
-			 2. DAO의 regist()를 통해 DB에 데이터를 삽입.
-			 (3번은 저랑 같이해요)
-			 3. list.board라는 요청이 다시 컨트롤러로 들어올 수 있도록 해 주세요. 
-			 */
-			
-			String writer = request.getParameter("bWriter");
-			String title = request.getParameter("bTitle");
-			String content = request.getParameter("bContent");
-			
-			BoardDAO.getInstance().regist(writer, title, content);
-			
+			sv = new RegistService();
+			sv.execute(request, response);
 			//왜 board_list.jsp로 리다이렉트를 하면 안될까?
 			//board_list.jsp에는 데이터베이스로부터 전체 글 목록을 가져오는
 			//로직이 없으니까요. (단순히 보여주는 역할만 할 뿐이다.)
@@ -73,9 +72,61 @@ public class BoardController extends HttpServlet {
 			
 		case "list":
 			System.out.println("글 목록 요청이 들어옴!");
-			List<BoardVO> list = BoardDAO.getInstance().listBoard();
+			sv = new GetListService();
+			sv.execute(request, response);
+			//sendRedirect를 하면 안되는 이유.
+			//request객체에 list를 담아서 전달하려 하는데, sendRedirect를 사용하면
+			//응답이 나가면서 request객체가 소멸해 버립니다.
+			//response.sendRedirect("board/board_list.jsp"); (x)
+			
+			//request객체를 다음 화면까지 운반하기 위한 forward 기능을 지원하는 객체
+			// -> ReqeustDispatcher
+			dp = request.getRequestDispatcher("board/board_list.jsp");
+			dp.forward(request, response);
 			
 			break;
+			
+		case "content":
+			System.out.println("글 상세보기 요청이 들어옴!");
+			sv = new ContentService();
+			sv.execute(request, response);
+			dp = request.getRequestDispatcher("board/board_content.jsp");
+			dp.forward(request, response);
+			
+			break;
+			
+		case "modify":
+			System.out.println("글 수정 페이지로 이동 요청!");
+			sv = new ModifyService();
+			sv.execute(request, response);
+			dp = request.getRequestDispatcher("board/board_modify.jsp");
+			dp.forward(request, response);
+			break;
+			
+		case "update":
+			System.out.println("글 수정 요청이 들어옴!");
+			sv = new UpdateService();
+			sv.execute(request, response);
+			response.sendRedirect("/MyWeb/content.board?bId=" + request.getParameter("bId"));
+			
+			break;
+			
+		case "delete":
+			System.out.println("글 삭제 요청이 들어옴!");
+			sv = new DeleteService();
+			sv.execute(request, response);
+			response.sendRedirect("/MyWeb/list.board");
+			break;
+			
+		case "search":
+			System.out.println("글 검색 요청이 들어옴!");
+			sv = new SearchService();
+			sv.execute(request, response);
+			dp = request.getRequestDispatcher("board/board_list.jsp");
+			dp.forward(request, response);
+			break;
+			
+			
 		}
 		
 		

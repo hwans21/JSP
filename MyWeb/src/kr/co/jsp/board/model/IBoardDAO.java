@@ -20,7 +20,7 @@ public interface IBoardDAO {
 	void deleteBoard(int bId);
 	
 	//글 검색 요청을 처리할 메서드 (제목 검색)
-	List<BoardVO> searchBoard(String keyword);
+	List<BoardVO> searchBoard(String keyword, String category);
 	
 	
 }

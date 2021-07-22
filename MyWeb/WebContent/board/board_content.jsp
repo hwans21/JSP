@@ -1,6 +1,6 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
 <html>
@@ -48,13 +48,13 @@
                     <div class="panel-heading text-white" style="background: #F8F8FF;">
                         <div class="row">
                             <div class="col-md-6">
-                                <h2 style="padding-left: 10px;"><!-- 글 제목 --></h2>
+                                <h2 style="padding-left: 10px;">${article.title}</h2>
                             </div>
                             <div class="col-md-offset-3 col-md-3">
-                                <div style="padding-top: 10px; font-size: 1.5em"><!-- 작성자 란 -->작성자:</div>
+                                <div style="padding-top: 10px; font-size: 1.5em">작성자: ${article.writer}</div>
                                 <div>
                                 	조회수: 
-                                	
+                                	${article.hit}
                                 </div>
                             </div>
                         </div>
@@ -62,7 +62,7 @@
 
                     <div class="panel-body">
                         <div class="article-content">
-                            <p><!-- 글 상세 내용 --></p>
+                            <p>${article.content}</p>
                         </div>
 
                         <hr>
@@ -70,15 +70,22 @@
                         <div class="row">
                             <div class="col-md-offset-1 col-md-5">
                                 <p class="last-update">
-                                	<!-- 글 작성 시간 --> 
+                                	${article.regDate}
                                 </p>
                             </div>
-                            <div class="btn-group col-md-offset-2 col-md-3">
-                                <a class="btn btn-info" href=>목록 보기</a>
+                            <div class="btn-group col-md-offset-1 col-md-5">
+                                <a class="btn btn-info" href="/MyWeb/list.board">목록 보기</a>
+                                <c:choose>
+                                	<c:when test="${user.id == article.writer}">
+                                		<a class="btn btn-primary" href="/MyWeb/modify.board?bId=${article.boardId}">수정하기</a>
+                                		<a class="btn btn-danger" href="/MyWeb/delete.board?bId=${article.boardId}" onclick="return confirm('정말 삭제하시겠습니까?')">삭제하기</a>
+                                	</c:when>
+                                	<c:otherwise>
+		                                <a class="btn btn-primary" href="/MyWeb/write.board">새 글 쓰기</a>                        	
+                                	</c:otherwise>
+                                </c:choose>
                                 
                                 
-                                
-                                <a class="btn btn-primary" href=>새 글 쓰기</a>
                             </div>
                         </div>
                     </div>
