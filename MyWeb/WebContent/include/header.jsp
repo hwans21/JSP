@@ -59,20 +59,29 @@
                 <ul class="nav navbar-nav">
 
                     <li>
-                        <a href="">HOME</a>
+                        <a href="/MyWeb">HOME</a>
                     </li>
                     <li>
-                        <a href="">Member</a>
+                        <a href="/MyWeb/member/member.jsp">Member</a>
                     </li>
                     <li>
                         <a href="">BOARD</a>
                     </li>
-                    <li>
-                        <a href="">LOGIN</a>
-                    </li>
-                    <li>
-                        <a href="" style="color:red">JOIN</a>
-                    </li>
+                    <% if(session.getAttribute("user") == null) { %>
+	                    <li>
+	                        <a href="/MyWeb/user/user_login.jsp">LOGIN</a>
+	                    </li>
+	                    <li>
+	                        <a href="/MyWeb/user/user_join.jsp" style="color:red">JOIN</a>
+	                    </li>
+                    <% } else { %>
+                   		<li>
+	                        <a href="/MyWeb/user/user_logout.jsp">LOGOUT</a>
+	                    </li>
+	                    <li>
+	                        <a href="/MyWeb/user/user_mypage.jsp" style="color:red">MYPAGE</a>
+	                    </li>
+                    <% } %>
                 </ul>
             </div>
 
