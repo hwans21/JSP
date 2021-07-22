@@ -30,7 +30,7 @@
 </head>
 <body>
 
-	<a href="cookie_check.jsp">만든 쿠키 확인하기!</a>
+	<a href="cookie_chec.jsp">만든 쿠키 확인하기!</a>
 
 </body>
 </html>
