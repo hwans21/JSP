@@ -29,6 +29,9 @@ public class BoardVO {
 	private Timestamp regDate;
 	private int hit;
 	
+	//new 마크를 띄울지 말지의 여부를 판단하는 논리 필드 추가
+	private boolean newMark;
+	
 	public BoardVO() {}
 
 	public BoardVO(int boardId, String writer, String title, String content, Timestamp regDate, int hit) {
@@ -41,6 +44,14 @@ public class BoardVO {
 		this.hit = hit;
 	}
 
+	public boolean isNewMark() {
+		return newMark;
+	}
+	
+	public void setNewMark(boolean newMark) {
+		this.newMark = newMark;
+	}
+	
 	public int getBoardId() {
 		return boardId;
 	}

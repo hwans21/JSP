@@ -122,8 +122,10 @@ public class BoardController extends HttpServlet {
 			System.out.println("글 검색 요청이 들어옴!");
 			sv = new SearchService();
 			sv.execute(request, response);
-			dp = request.getRequestDispatcher("board/board_list.jsp");
-			dp.forward(request, response);
+			if(request.getAttribute("boardList") != null) {
+				dp = request.getRequestDispatcher("board/board_list.jsp");
+				dp.forward(request, response);
+			}
 			break;
 			
 			
